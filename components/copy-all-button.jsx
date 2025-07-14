@@ -2,10 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 
-export function CopyAllButton({ passwords }) {
+export function CopyAllButton({ password }) {
   const handleCopy = () => {
-    if (passwords.length > 0) {
-      navigator.clipboard.writeText(passwords.join("\n"));
+    if (password.length > 0) {
+      navigator.clipboard.writeText(password.join("\n"));
     }
   };
 

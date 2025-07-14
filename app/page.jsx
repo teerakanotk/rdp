@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { pwdgen } from "@/lib/pwdgen";
+import { useState } from "react";
 
 import {
   Card,
@@ -29,20 +28,6 @@ export default function HomePage() {
   const [password, setPassword] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null);
-
-  useEffect(() => {
-    const generateOnLoad = () => {
-      const newPassword = [];
-      for (let i = 0; i < quantity; i++) {
-        newPassword.push(pwdgen(passLength));
-      }
-      setPassword(newPassword);
-      setSelectedIndex(null);
-      setCurrentIndex(0);
-    };
-
-    generateOnLoad();
-  }, []); // Only run once on mount
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-accent-foreground/5 px-4 py-8">
@@ -106,7 +91,6 @@ export default function HomePage() {
               setPassword={setPassword}
               setSelectedIndex={setSelectedIndex}
               setCurrentIndex={setCurrentIndex}
-              pwdgenFunction={pwdgen}
             />
 
             <CopyOneLineButton
