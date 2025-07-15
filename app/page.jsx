@@ -58,7 +58,7 @@ export default function HomePage() {
   }, [quantity, passLength]);
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-accent-foreground/5">
+    <div className="min-h-screen flex justify-center py-8 bg-accent-foreground/5">
       <Card className="w-[350px] md:w-[650px] shadow-lg">
         <CardHeader className="flex justify-center items-center">
           <CardTitle className="text-2xl font-bold text-center">
@@ -131,7 +131,7 @@ export default function HomePage() {
             <CopyAllButton password={password} />
           </div>
 
-          <ScrollArea className="h-66 w-full p-2 border rounded-md overflow-auto">
+          <ScrollArea className="min-h-14 max-h-90 w-full p-2 border rounded-md overflow-auto">
             {password.map((password, index) => (
               <p
                 key={index}
