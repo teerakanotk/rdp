@@ -31,6 +31,7 @@ export default function HomePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [highlightAll, setHighlightAll] = useState(false);
+  const itemRefs = useRef([]);
 
   // load settings on page load
   useEffect(() => {
@@ -57,10 +58,9 @@ export default function HomePage() {
     setPassword(initialPasswords);
     setSelectedIndex(null);
     setCurrentIndex(0);
+    scrollToTop();
   }, [quantity, passLength]);
 
-  // refs for password item
-  const itemRefs = useRef([]);
   itemRefs.current = password.map(
     (_, i) => itemRefs.current[i] ?? React.createRef()
   );
@@ -73,6 +73,14 @@ export default function HomePage() {
       });
     }
   }, [selectedIndex]);
+
+  // function scroll to top
+  const scrollAreaRef = useRef(null);
+  const scrollToTop = () => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = 0;
+    }
+  };
 
   return (
     <div className="min-h-screen flex justify-center py-8 bg-accent-foreground/5">
@@ -91,7 +99,7 @@ export default function HomePage() {
               value={passLength.toString()}
               onValueChange={(value) => setPassLength(parseInt(value))}
             >
-              <SelectTrigger className="w-32">
+              <SelectTrigger className="w-20">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -111,7 +119,7 @@ export default function HomePage() {
               value={quantity.toString()}
               onValueChange={(value) => setQuantity(parseInt(value))}
             >
-              <SelectTrigger className="w-32">
+              <SelectTrigger className="w-20">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -137,6 +145,7 @@ export default function HomePage() {
               setSelectedIndex={setSelectedIndex}
               setCurrentIndex={setCurrentIndex}
               setHighlightAll={setHighlightAll}
+              onGenerate={() => scrollToTop()}
             />
 
             <CopyOneButton
@@ -153,7 +162,10 @@ export default function HomePage() {
             />
           </div>
 
-          <ScrollArea className="h-[50vh] w-full p-2 border rounded-md overflow-auto">
+          <ScrollArea
+            ref={scrollAreaRef}
+            className="h-[50vh] w-full p-2 border rounded-md overflow-auto"
+          >
             {password.map((password, index) => (
               <p
                 key={index}
