@@ -10,6 +10,7 @@ export function GenerateButton({
   setSelectedIndex,
   setCurrentIndex,
   setHighlightAll,
+  onGenerate,
 }) {
   const handleGenerate = () => {
     const newPasswords = generatePasswords(getQuantity, getPassLength);
@@ -17,6 +18,8 @@ export function GenerateButton({
     setSelectedIndex(null);
     setCurrentIndex(0);
     setHighlightAll(false);
+
+    if (onGenerate) onGenerate();
   };
 
   return (
