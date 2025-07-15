@@ -131,12 +131,12 @@ export default function HomePage() {
             <CopyAllButton password={password} />
           </div>
 
-          <ScrollArea className="min-h-14 max-h-66 w-full p-2 border rounded-md overflow-auto">
+          <ScrollArea className="h-66 w-full p-2 border rounded-md overflow-auto">
             {password.map((password, index) => (
               <p
                 key={index}
                 className={`p-1.5 break-words ${
-                  selectedIndex === index ? "bg-accent-foreground/4" : ""
+                  selectedIndex === index ? "bg-primary/10" : ""
                 }`}
               >
                 {password}
