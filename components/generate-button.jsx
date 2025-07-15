@@ -9,12 +9,14 @@ export function GenerateButton({
   getPassLength,
   setSelectedIndex,
   setCurrentIndex,
+  setHighlightAll,
 }) {
   const handleGenerate = () => {
     const newPasswords = generatePasswords(getQuantity, getPassLength);
     setPassword(newPasswords);
     setSelectedIndex(null);
     setCurrentIndex(0);
+    setHighlightAll(false);
   };
 
   return (

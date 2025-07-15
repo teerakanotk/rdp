@@ -30,6 +30,7 @@ export default function HomePage() {
   const [password, setPassword] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [highlightAll, setHighlightAll] = useState(false);
 
   // load settings on page load
   useEffect(() => {
@@ -135,6 +136,7 @@ export default function HomePage() {
               setPassword={setPassword}
               setSelectedIndex={setSelectedIndex}
               setCurrentIndex={setCurrentIndex}
+              setHighlightAll={setHighlightAll}
             />
 
             <CopyOneButton
@@ -142,9 +144,13 @@ export default function HomePage() {
               currentIndex={currentIndex}
               setCurrentIndex={setCurrentIndex}
               setSelectedIndex={setSelectedIndex}
+              setHighlightAll={setHighlightAll}
             />
 
-            <CopyAllButton password={password} />
+            <CopyAllButton
+              password={password}
+              onHighlightAll={() => setHighlightAll(true)}
+            />
           </div>
 
           <ScrollArea className="h-[50vh] w-full p-2 border rounded-md overflow-auto">
@@ -153,7 +159,7 @@ export default function HomePage() {
                 key={index}
                 ref={itemRefs.current[index]}
                 className={`p-1.5 break-words ${
-                  selectedIndex === index ? "bg-accent-foreground/4" : ""
+                  highlightAll || selectedIndex === index ? "bg-primary/10" : ""
                 }`}
               >
                 {password}

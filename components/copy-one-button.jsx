@@ -7,6 +7,7 @@ export function CopyOneButton({
   currentIndex,
   setCurrentIndex,
   setSelectedIndex,
+  setHighlightAll,
 }) {
   const handleCopy = () => {
     if (password.length === 0) return;
@@ -15,6 +16,7 @@ export function CopyOneButton({
     navigator.clipboard.writeText(password[nextIndex]);
     setSelectedIndex(nextIndex);
     setCurrentIndex(nextIndex + 1); // Will reset to 0 on next call if at end
+    setHighlightAll(false);
   };
 
   return (

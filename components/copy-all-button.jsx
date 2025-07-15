@@ -2,10 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 
-export function CopyAllButton({ password }) {
+export function CopyAllButton({ password, onHighlightAll }) {
   const handleCopy = () => {
     if (password.length > 0) {
       navigator.clipboard.writeText(password.join("\n"));
+      onHighlightAll(); // trigger parent state
     }
   };
 
