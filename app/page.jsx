@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState, useRef } from "react";
 import { generatePasswords } from "@/lib/password-utils";
 
 import {
@@ -57,16 +58,31 @@ export default function HomePage() {
     setCurrentIndex(0);
   }, [quantity, passLength]);
 
+  // refs for password item
+  const itemRefs = useRef([]);
+  itemRefs.current = password.map(
+    (_, i) => itemRefs.current[i] ?? React.createRef()
+  );
+
+  useEffect(() => {
+    if (selectedIndex != null && itemRefs.current[selectedIndex]) {
+      itemRefs.current[selectedIndex].current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [selectedIndex]);
+
   return (
     <div className="min-h-screen flex justify-center py-8 bg-accent-foreground/5">
-      <Card className="w-[350px] md:w-[650px] shadow-lg">
+      <Card className="w-[350px] md:w-[650px] shadow-lg flex flex-col h-[90vh]">
         <CardHeader className="flex justify-center items-center">
           <CardTitle className="text-2xl font-bold text-center">
             Random Password Generator
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="flex flex-col gap-2">
+        <CardContent className="shrink-0 flex flex-col gap-2">
           {/* password length */}
           <div className="w-full flex items-center justify-between">
             <p>Password Length:</p>
@@ -111,7 +127,7 @@ export default function HomePage() {
           </div>
         </CardContent>
 
-        <CardFooter className={"flex flex-col gap-4"}>
+        <CardFooter className="flex flex-col gap-4 flex-grow overflow-hidden">
           <div className="flex justify-center gap-1">
             <GenerateButton
               getPassLength={passLength}
@@ -131,12 +147,13 @@ export default function HomePage() {
             <CopyAllButton password={password} />
           </div>
 
-          <ScrollArea className="min-h-14 max-h-90 w-full p-2 border rounded-md overflow-auto">
+          <ScrollArea className="h-[50vh] w-full p-2 border rounded-md overflow-auto">
             {password.map((password, index) => (
               <p
                 key={index}
+                ref={itemRefs.current[index]}
                 className={`p-1.5 break-words ${
-                  selectedIndex === index ? "bg-primary/10" : ""
+                  selectedIndex === index ? "bg-accent-foreground/4" : ""
                 }`}
               >
                 {password}
