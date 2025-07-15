@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { generatePasswords } from "@/lib/password-utils";
 
 import {
   Card,
@@ -9,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -18,8 +19,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { PasswordGenerateButton } from "@/components/password-generate-button";
-import { CopyOneLineButton } from "@/components/copy-one-line-button";
+import { GenerateButton } from "@/components/generate-button";
+import { CopyOneButton } from "@/components/copy-one-button";
 import { CopyAllButton } from "@/components/copy-all-button";
 
 export default function HomePage() {
@@ -29,9 +30,36 @@ export default function HomePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
+  // load settings on page load
+  useEffect(() => {
+    const savedLength = localStorage.getItem("passwordLength");
+    const savedQuantity = localStorage.getItem("passwordQuantity");
+
+    if (savedLength) setPassLength(parseInt(savedLength));
+    if (savedQuantity) setQuantity(parseInt(savedQuantity));
+  }, []);
+
+  // save passwordLength setting to localstorage
+  useEffect(() => {
+    localStorage.setItem("passwordLength", passLength.toString());
+  }, [passLength]);
+
+  // save passwordQuantity setting to localstorage
+  useEffect(() => {
+    localStorage.setItem("passwordQuantity", quantity.toString());
+  }, [quantity]);
+
+  // auto-generate password when page is load
+  useEffect(() => {
+    const initialPasswords = generatePasswords(quantity, passLength);
+    setPassword(initialPasswords);
+    setSelectedIndex(null);
+    setCurrentIndex(0);
+  }, [quantity, passLength]);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-accent-foreground/5 px-4 py-8">
-      <Card className="w-[600px] shadow-lg">
+    <div className="min-h-screen flex justify-center items-center bg-accent-foreground/5">
+      <Card className="w-[350px] md:w-[650px] shadow-lg">
         <CardHeader className="flex justify-center items-center">
           <CardTitle className="text-2xl font-bold text-center">
             Random Password Generator
@@ -85,7 +113,7 @@ export default function HomePage() {
 
         <CardFooter className={"flex flex-col gap-4"}>
           <div className="flex justify-center gap-1">
-            <PasswordGenerateButton
+            <GenerateButton
               getPassLength={passLength}
               getQuantity={quantity}
               setPassword={setPassword}
@@ -93,7 +121,7 @@ export default function HomePage() {
               setCurrentIndex={setCurrentIndex}
             />
 
-            <CopyOneLineButton
+            <CopyOneButton
               password={password}
               currentIndex={currentIndex}
               setCurrentIndex={setCurrentIndex}
@@ -103,20 +131,20 @@ export default function HomePage() {
             <CopyAllButton password={password} />
           </div>
 
-          <div className="w-full p-2 border rounded-md">
-            <ScrollArea className="h-64 overflow-y-auto">
-              {password.map((password, index) => (
-                <p
-                  key={index}
-                  className={`p-1.5 break-words ${
-                    selectedIndex === index ? "bg-accent-foreground/4" : ""
-                  }`}
-                >
-                  {password}
-                </p>
-              ))}
-            </ScrollArea>
-          </div>
+          <ScrollArea className="min-h-14 max-h-66 w-full p-2 border rounded-md overflow-auto">
+            {password.map((password, index) => (
+              <p
+                key={index}
+                className={`p-1.5 break-words ${
+                  selectedIndex === index ? "bg-accent-foreground/4" : ""
+                }`}
+              >
+                {password}
+              </p>
+            ))}
+
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </CardFooter>
       </Card>
     </div>
