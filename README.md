@@ -2,7 +2,7 @@
 
 Welcome to the **Random Password Generator** web application! This tool helps you quickly create strong, customizable passwords directly in your browser.
 
-![Home Screenshot](/home.png)
+![Home Screenshot](/public/home.png)
 
 ## 🚀 Features
 
